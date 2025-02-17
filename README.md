@@ -1,2 +1,8 @@
 # employee.test
-Test to build API and UI
+To execute Api use docker-compose up
+
+To execute UI use 
+1) cd EmployeeUI
+2) npm install
+3) npm install
+
