@@ -1,0 +1,31 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: sqlserver
+    restart: always
+    environment:
+      SA_PASSWORD: "YourStrong!Passw0rd"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+
+  employee-api:
+    build: .
+    container_name: employee-api
+    restart: always
+    depends_on:
+      - sqlserver
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=EmployeeDB;User Id=sa;Password=YourStrong!Passw0rd;
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+    volumes:
+      - .:/app
+    command: ["dotnet", "EmployeeAPI.dll"]
+
+volumes:
+  sqlserver-data:
